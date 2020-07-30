@@ -1,0 +1,142 @@
+body {
+	margin: 0
+}
+
+.disn {
+	display: none;
+}
+
+.disb {
+	display: block;
+}
+
+.pa {
+	position: absolute;
+}
+
+.pr {
+	position: relative;
+}
+
+.textin {
+	text-indent: 2em;
+}
+
+.anb {
+	color: black;
+	text-decoration: none;
+}
+
+.bgc {
+	background-size: 100% 100%;
+}
+
+.pf {
+	position: fixed;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.ta {
+	text-align: center;
+}
+
+.align {
+	text-align: center;
+}
+
+.fw4 {
+	font-weight: 400;
+}
+
+.fw7 {
+	font-weight: 700;
+}
+
+.fw9 {
+	font-weight: 900;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 配合js的 */
+
+/* 轮播： */

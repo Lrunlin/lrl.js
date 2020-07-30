@@ -46,8 +46,7 @@ function style(unit) {
         'hei', 'height',
         'fs', 'fontSize'
     ];
-    // 上方是在HTML中使用的词
-    // 下方是控制属性
+    // 修改为左边为在自定义属性中使用的词，右边为数字词
     for (let i = 0; i < element.length; i++) {
         let data = element[i].getAttribute('lrl') || element[i].getAttribute('data-lrl') || element[i].getAttribute('data-') || element[i].getAttribute('style');
         // 控制在HTML中使用的名称
@@ -74,16 +73,16 @@ function style(unit) {
                     if (d == 1 && Number(data.substring(name + nameArr[w].length, name + nameArr[w].length + 4)) >= 1000) {
                         var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 3) + unit;
                         console.error('四位没必要弄用的少容易出错改一下（不改自动按照3位值处理）：' + nameArr[w] + value + '(元素的' + nameArr[w + 1] + ')');
-                            // 设置正则表达式判断仅数字4位是否正确，并要求大于1000以免误伤3位及其以下
-                        }
-                        element[i].style[nameArr[w + 1]] = value;
-                        // 设置标签的name=value值+‘px’
+                        // 设置正则表达式判断仅数字4位是否正确，并要求大于1000以免误伤3位及其以下
                     }
+                    element[i].style[nameArr[w + 1]] = value;
+                    // 设置标签的name=value值+‘px’
                 }
             }
         }
     }
-    window.addEventListener('load', style('px'));
+}
+window.addEventListener('load', style('px'));
 
 
 
@@ -101,71 +100,71 @@ function style(unit) {
 
 
 
-    // 自动获取元素，适用于lineheight之类的属性
-    window.addEventListener('load', function () {
-        for (var i = 0; i < element.length; i++) {
-            if (element[i].className.indexOf('light') != -1) {
-                let height = element[i].offsetHeight;
-                element[i].style.lineHeight = height + 'px'
-            }
-            // 控制行高居中
-
+// 自动获取元素，适用于lineheight之类的属性
+window.addEventListener('load', function () {
+    for (var i = 0; i < element.length; i++) {
+        if (element[i].className.indexOf('light') != -1) {
+            let height = element[i].offsetHeight;
+            element[i].style.lineHeight = height + 'px'
         }
-    })
+        // 控制行高居中
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // 设置单位默认为px,使用时不是px直接修改即可
-    // width为设计宽度
-    function rem(width, remValue) {
-        let container = document.getElementsByClassName('container')[0];
-        let html = document.getElementsByTagName('html')[0];
-        let maxWidth = window.innerWidth;
-        html.style.fontSize = maxWidth / width * remValue + 'px';
-        // 默认像素为10
     }
-
-    // rem(1209,10)
-    //1,本人电脑屏幕像素， 设计稿像素2,rem大小1rem=多少像素，默认为10
+})
 
 
-    function zoom(value, maxWidth) {
-        // 火狐浏览器不兼容zoom
-        if (window.navigator.userAgent.indexOf('Firefox') != -1) {
-            let body = document.body;
-            let width = window.innerWidth / value;
-            body.style.width = maxWidth + 'px';
-            body.style.transform = 'scale(' + width + ')';
-            body.style.transformOrigin = 'top left';
-        } else {
-            let body = document.body;
-            let width = window.innerWidth / value;
-            body.style.width = maxWidth + 'px';
-            body.style.zoom = width;
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 设置单位默认为px,使用时不是px直接修改即可
+// width为设计宽度
+function rem(width, remValue) {
+    let container = document.getElementsByClassName('container')[0];
+    let html = document.getElementsByTagName('html')[0];
+    let maxWidth = window.innerWidth;
+    html.style.fontSize = maxWidth / width * remValue + 'px';
+    // 默认像素为10
+}
+
+// rem(1209,10)
+//1,本人电脑屏幕像素， 设计稿像素2,rem大小1rem=多少像素，默认为10
+
+
+function zoom(value, maxWidth) {
+    // 火狐浏览器不兼容zoom
+    if (window.navigator.userAgent.indexOf('Firefox') != -1) {
+        let body = document.body;
+        let width = window.innerWidth / value;
+        body.style.width = maxWidth + 'px';
+        body.style.transform = 'scale(' + width + ')';
+        body.style.transformOrigin = 'top left';
+    } else {
+        let body = document.body;
+        let width = window.innerWidth / value;
+        body.style.width = maxWidth + 'px';
+        body.style.zoom = width;
     }
-    // zoom()
-    // 第一个参数为比例，即已多大的显示屏为标准，第二个参数为body的宽度两个类型都是数字
+}
+// zoom()
+// 第一个参数为比例，即已多大的显示屏为标准，第二个参数为body的宽度两个类型都是数字
 
 
 
@@ -293,4 +292,4 @@ function style(unit) {
 
 
 
-    // m
+// m
