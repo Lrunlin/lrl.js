@@ -6,7 +6,8 @@ function loadStyle() {
     let link = document.createElement('link');
     link.type = 'text/css';
     link.rel = 'stylesheet';
-    link.href = 'http://101.200.141.4/5img/lrl.css?v' + time;
+    link.href = 'http://101.200.141.4/lrl.css?v' + time;
+    // link.href = 'lrl.css?v' + time;
     // // 创建link标签并且设置他的属性
     // // 引入的css地址
     let head = document.getElementsByTagName('head')[0];
@@ -24,9 +25,16 @@ function loadStyle() {
     head.appendChild(metaa);
     head.appendChild(metab);
     head.appendChild(metac);
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    // script.src = 'http://101.200.141.4/event.js?v' + time;
+    script.src = 'event.js?v' + time;
+    head.appendChild(script);
 }
 loadStyle();
 // 引入个人外部css浏览器优先使用webkit
+
+
 function style(unit) {
     let element = document.getElementsByTagName('*');
     // 参数为单位默认单位为px
@@ -38,17 +46,18 @@ function style(unit) {
         'pb', 'paddingBottom',
         'pl', 'paddingLeft',
         'pr', 'paddingRight',
-        'top', 'top',
-        'bottom', 'bottom',
-        'left', 'left',
-        'right', 'right',
+        'to', 'top',
+        'bot', 'bottom',
+        'lef', 'left',
+        'rig', 'right',
         'wid', 'width',
         'hei', 'height',
-        'fs', 'fontSize'
+        'fs', 'fontSize',
+        'bor', 'borderRadius'
     ];
     // 修改为左边为在自定义属性中使用的词，右边为数字词
     for (let i = 0; i < element.length; i++) {
-        let data = element[i].getAttribute('lrl') || element[i].getAttribute('data-lrl') || element[i].getAttribute('data-') || element[i].getAttribute('style');
+        let data = element[i].getAttribute('lrl') || element[i].getAttribute('data-lrl') || element[i].getAttribute('data-') || element[i].getAttribute('style') || element[i].getAttribute('alt');
         // 控制在HTML中使用的名称
         if (data != null) {
             // 判断是否使用了方法
@@ -63,17 +72,16 @@ function style(unit) {
                     let c = type.test(Number(data.substring(name + nameArr[w].length, name + nameArr[w].length + 1)));
                     let d = type.test(Number(data.substring(name + nameArr[w].length, name + nameArr[w].length + 4)));
                     // 截取name名称后面的值1,2，3位，转化为数字类型，使用正则表达式验证，先验证三位是否都是数字如果是值为名称后三位的数字，类推
-                    if (a == 1) {
+
+
+                    if (d == 1) {
+                        var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 4) + unit;
+                    } else if (a == 1) {
                         var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 3) + unit;
                     } else if (b == 1) {
                         var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 2) + unit;
                     } else if (c == 1) {
                         var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 1) + unit;
-                    }
-                    if (d == 1 && Number(data.substring(name + nameArr[w].length, name + nameArr[w].length + 4)) >= 1000) {
-                        var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 3) + unit;
-                        console.error('四位没必要弄用的少容易出错改一下（不改自动按照3位值处理）：' + nameArr[w] + value + '(元素的' + nameArr[w + 1] + ')');
-                        // 设置正则表达式判断仅数字4位是否正确，并要求大于1000以免误伤3位及其以下
                     }
                     element[i].style[nameArr[w + 1]] = value;
                     // 设置标签的name=value值+‘px’
@@ -108,7 +116,6 @@ window.addEventListener('load', function () {
             element[i].style.lineHeight = height + 'px'
         }
         // 控制行高居中
-
     }
 })
 
@@ -163,7 +170,7 @@ function zoom(value, maxWidth) {
         body.style.zoom = width;
     }
 }
-// zoom()
+// zoom(1200,1200)
 // 第一个参数为比例，即已多大的显示屏为标准，第二个参数为body的宽度两个类型都是数字
 
 
@@ -210,6 +217,7 @@ function zoom(value, maxWidth) {
 
 
 
+// 事件函数创建
 
 
 
@@ -223,49 +231,57 @@ function zoom(value, maxWidth) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function hide() {
+    this.style.display = 'none'
+}
+// 点击隐藏
+function show() {
+    this.style.display = 'blcok'
+}
+// 点击显示
+// 轮播
+function carouselLrl(width, height, time) {
+    // 参数顺序：宽度{盒子，图片}高度{戒子，图片，ul}间隔时间{js定时器间隔时间}
+    let box = document.getElementById('carouselBox');
+    let ul = box.getElementsByTagName('ul')[0];
+    let li = ul.getElementsByTagName('li');
+    let img = box.getElementsByTagName('img');
+    let position = [];
+    box.setAttribute('style', 'overflow: hidden;height:' + height + 'px;' + 'width:' + width + 'px')
+    ul.setAttribute('style', "position: relative;width: 400000px;height:" + height + 'px;')
+    for (var i = 0; i < img.length; i++) {
+        position.push(-width * i + 'px');
+        // 将轮播图的位置依次推进数组
+        img[i].setAttribute('style', 'display: block;float: left;height:' + height + 'px;' + 'width:' + width + 'px')
+    }
+    for (var i = 0; i < li.length; i++) {
+        li[i].setAttribute('style', "float: left;list-style-type: none;")
+        // 设置li属性
+    }
+    let num = 0;
+    setInterval(
+        () => {
+            num == position.length ? num = 0 : num++;
+            ul.style.left = position[num];
+            // 定时器设置ul移动
+        }, time
+    );
+    let btn = document.getElementById('carouselBtn') || box.getElementsByTagName('ul')[1];
+    // 如果设置了id就设置为id否则设置为外层盒子里面的第二个ul
+    if (btn != undefined) {
+        // 判断是否使用了轮播触碰按钮
+        let btnLi = btn.getElementsByTagName('li');
+        // 设置轮播图的触碰按钮
+        btn.className += 'pa';
+        for (let i = 0; i < btnLi.length; i++) {
+            btnLi[i].onmousemove = () => {
+                ul.style.left = position[i];
+            }
+        }
+    }
+}
+// carouselLrl(400, 200, 5000);
+// 需要在css中设置transition,也就是运动时间
 
 
 
