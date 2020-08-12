@@ -63,10 +63,16 @@ body {
 	font-weight: 900;
 }
 
+.cb{
+	clear: both;
+}
 
-
-
-
+.b50{
+	border-radius: 50%;
+}
+.borblack{
+	border: 1px solid black;
+}
 
 
 
