@@ -363,27 +363,48 @@ function $(el) {
 
 
 
-
-
 animateObj = new Object();
 animateObj.animateIndex = 0
 animateObj.oldData = {}
 
 
 
-function animate(obj, data, time, method) {
+
+
+Lrl.animate = function (obj, data, time, method) {
+    // function data() {
+    //     let oldData = {};
+    //     let index = 0;
+    //     return {
+    //         oldData,
+    //         index
+    //     }
+    // }
+    // data();
+    // let animateObj = data()
+    // console.log(animateObj.index);
 
     // animate函数的全局变量存储{尽量减少重复使用对象储存}
 
-
     let oldTime = getComputedStyle(obj).getPropertyValue('transition'); //在所有函数执行前保存旧的时间
-
-    function strat() {
+    function stratMethod() {
         obj.style.transition = (time / 1000).toString() + 's';
         //添加时间 转化为css的秒
         for (let name in data) {
             animateObj.oldData[name] = getComputedStyle(obj).getPropertyValue(name)
             // 存储函数运行之前的属性值,取消函数的时候返回原值
+            obj.style[name] = data[name]; // 循环添加属性 
+        }
+        setTimeout(() => {
+            obj.style.transition = oldTime;
+            // 动画运行完重新设置为旧的时间
+        }, time);
+    }
+    // 没使用方法不向存储的对象内添加数据
+    function strat() {
+        obj.style.transition = (time / 1000).toString() + 's';
+        //添加时间 转化为css的秒
+        for (let name in data) {
             obj.style[name] = data[name]; // 循环添加属性 
         }
         setTimeout(() => {
@@ -402,11 +423,13 @@ function animate(obj, data, time, method) {
             obj.style.transition = oldTime;
             // 动画运行完重新设置为旧的时间
         }, time);
+        animateObj.oldData = {};
+        // 清除存储的数据
     }
     if (method != undefined) {
         if (animateObj.animateIndex == 0) {
             animateObj.animateIndex = 1
-            strat();
+            stratMethod();
         } else {
             animateObj.animateIndex = 0
             end();
@@ -414,7 +437,8 @@ function animate(obj, data, time, method) {
     } else {
         strat();
     }
-    // 判断使用方法，如果method定义了则执行开始和结束函数，否则只执行结束函数
+
+    // 判断使用方法，如果method定义了则执行开始和结束函数，否则只执行开始函数
 
 
 
@@ -422,14 +446,15 @@ function animate(obj, data, time, method) {
 }
 
 $('btn').onclick = function () {
-    animate(
+    Lrl.animate(
         $('div'), {
             height: '200px',
             width: '200px',
             backgroundColor: 'blue',
             fontSize: '34px',
-        }, 1000, 1)
+        }, 1000, '')
 }
+
 
 
 // css函数修改元素属性
@@ -464,6 +489,26 @@ function css(obj, data) {
 
 
 
+
+
+// function ajax(obj) {
+//     let http;
+//     http = new XMLHttpRequest();
+//     http.onreadystatechange = function () {
+//         obj.method.toLocaleLowerCase() == 'post' ? obj.method = 'POST' : obj.method = 'GET';
+//         // 设置请求方式
+//         if (http.readyState == 4 && http.status >= 200 && http.status < 300) {
+//             // 成功执行的事件
+//             obj.success && obj.success(http.responseText, http.responseXML);
+//         } else {
+//             console.error('1');
+
+//         }
+//     }
+//     let time = '?v' + new Date().getTime();
+//     http.open(obj.method, obj.url + time, true);
+//     http.send();
+// }
 // ajax({
 //     url: "assets/test.json",
 //     method: "GET",
@@ -473,22 +518,5 @@ function css(obj, data) {
 //     },
 
 // })
-
-// function ajax(obj) {
-//     let http;
-//     http = new XMLHttpRequest();
-//     http.onreadystatechange = function () {
-//         if (http.readyState == 4 && http.status >= 200 && http.status < 300) {
-//             // 成功执行的事件
-//             obj.success && obj.success(http.responseText, http.responseXML);
-//         }
-//         obj.method.toLocaleLowerCase() == 'post' ? obj.method = 'POST' : obj.method = 'GET';
-//     }
-//     let time = '?v' + new Date().getTime();
-//     http.open(obj.method, obj.url + time, true);
-//     http.send();
-// }
-// ajax()
-
 
 // m

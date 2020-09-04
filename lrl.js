@@ -49,6 +49,7 @@ for (let i = 0; i < element.length; i++) {
 
 
 
+const Lrl = new Object; //创建对象Lrl
 
 
 
@@ -59,7 +60,7 @@ for (let i = 0; i < element.length; i++) {
 
 
 
-function style(unit) {
+Lrl.style=function (unit) {
     let element = document.getElementsByTagName('*');
     // 参数为单位默认单位为px
     let nameArr = ['mt', 'marginTop',
@@ -112,7 +113,7 @@ function style(unit) {
         }
     }
 }
-window.addEventListener('load', style('px'));
+window.addEventListener('load', Lrl.style('px'));
 
 
 
@@ -219,7 +220,6 @@ function zoom(value, maxWidth) {
 
 
 
-var Lrl = new Object; //创建对象Lrl
 
 
 
@@ -356,54 +356,123 @@ function carouselLrl(width, height, time) {
 // 需要在css中设置transition,也就是运动时间
 
 
+function $(el) {
+    // 选择器函数 {仅支持id选择器}
+    return document.getElementById(el)
+}
+
+
+
+animateObj = new Object();
+animateObj.animateIndex = 0
+animateObj.oldData = {}
 
 
 
 
 
+Lrl.animate = function (obj, data, time, method) {
+    // animate函数的全局变量存储{尽量减少重复使用对象储存}
+
+    let oldTime = getComputedStyle(obj).getPropertyValue('transition'); //在所有函数执行前保存旧的时间
+    function stratMethod() {
+        obj.style.transition = (time / 1000).toString() + 's';
+        //添加时间 转化为css的秒
+        for (let name in data) {
+            animateObj.oldData[name] = getComputedStyle(obj).getPropertyValue(name)
+            // 存储函数运行之前的属性值,取消函数的时候返回原值
+            obj.style[name] = data[name]; // 循环添加属性 
+        }
+        setTimeout(() => {
+            obj.style.transition = oldTime;
+            // 动画运行完重新设置为旧的时间
+        }, time);
+    }
+    // 没使用方法不向存储的对象内添加数据
+    function strat() {
+        obj.style.transition = (time / 1000).toString() + 's';
+        //添加时间 转化为css的秒
+        for (let name in data) {
+            obj.style[name] = data[name]; // 循环添加属性 
+        }
+        setTimeout(() => {
+            obj.style.transition = oldTime;
+            // 动画运行完重新设置为旧的时间
+        }, time);
+    }
+
+    function end() {
+        obj.style.transition = (time / 1000).toString() + 's';
+        // 设置时间
+        for (let value in animateObj.oldData) {
+            obj.style[value] = animateObj.oldData[value]; // 循环添加事件
+        }
+        setTimeout(() => {
+            obj.style.transition = oldTime;
+            // 动画运行完重新设置为旧的时间
+        }, time);
+        animateObj.oldData = {};
+        // 清除存储的数据
+    }
+    if (method != undefined) {
+        if (animateObj.animateIndex == 0) {
+            animateObj.animateIndex = 1
+            stratMethod();
+        } else {
+            animateObj.animateIndex = 0
+            end();
+        }
+    } else {
+        strat();
+    }
+
+    // 判断使用方法，如果method定义了则执行开始和结束函数，否则只执行开始函数
+    // !!:method方法暂时只能使用一次
+}
 
 
 
+// css函数修改元素属性
+Lrl.css = function (obj, data) {
+    for (let name in data) {
+        animateObj.oldData[name] = getComputedStyle(obj).getPropertyValue(name);
+        obj.style[name] = data[name];
+    }
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ajax({
-//     url: "assets/test.json",
-//     method: "GET",
-//     success: function (response) {
-//         console.log(response);
-
-//     },
-
-// })
-
-// function ajax(obj) {
-//     let http;
-//     http = new XMLHttpRequest();
-//     http.onreadystatechange = function () {
-//         if (http.readyState == 4 && http.status >= 200 && http.status < 300) {
-//             // 成功执行的事件
-//             obj.success && obj.success(http.responseText, http.responseXML);
-//         }
-//         obj.method.toLocaleLowerCase() == 'post' ? obj.method = 'POST' : obj.method = 'GET';
-//     }
-//     let time = '?v' + new Date().getTime();
-//     http.open(obj.method, obj.url + time, true);
-//     http.send();
+// $('btn').onclick = function () {
+//     Lrl.animate(
+//         $('div'), {
+//             height: '200px',
+//             width: '200px',
+//             backgroundColor: 'blue',
+//             fontSize: '34px',
+//         }, 1000, '写就是使用方法：{再次点击返回}')
 // }
-// ajax()
+
+
+
+
+
+
+
+
+
+
+// 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // m
