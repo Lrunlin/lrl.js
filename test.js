@@ -1,3 +1,8 @@
+// 地址： http://101.200.141.4/lrl.js
+// 联系方式：QQ：1974109227
+// 微信号：webzhizuo(接bootsrtap,jq,h5,c3,简单的vue)
+// github（随便做着玩）：liurl@gmail.com（Liu Run Lin）
+// js加密地址：https://www.sojson.com/charEncode.html
 var element = document.getElementsByTagName('*');
 // 选择所有标签
 function loadStyle() {
@@ -7,7 +12,7 @@ function loadStyle() {
     link.type = 'text/css';
     link.rel = 'stylesheet';
     link.href = 'http://101.200.141.4/lrl.css?v' + time;
-    // link.href = 'lrl.css?v' + time;
+    // link.href = 'lrl.css?v' + time;A
     // // 创建link标签并且设置他的属性
     // // 引入的css地址
     let head = document.getElementsByTagName('head')[0];
@@ -27,12 +32,31 @@ function loadStyle() {
     head.appendChild(metac);
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    // script.src = 'http://101.200.141.4/event.js?v' + time;
-    script.src = 'event.js?v' + time;
+    script.src = 'http://101.200.141.4/event.js?v' + time;
+    // script.src = 'event.js?v' + time;
     head.appendChild(script);
 }
 loadStyle();
 // 引入个人外部css浏览器优先使用webkit
+
+
+let arrClass = [];
+for (let i = 0; i < element.length; i++) {
+    arrClass.push(element[i].className)
+}
+
+// 创建for循环数组，存储所有元素的className
+
+
+
+
+
+
+
+
+
+
+
 
 
 function style(unit) {
@@ -72,8 +96,6 @@ function style(unit) {
                     let c = type.test(Number(data.substring(name + nameArr[w].length, name + nameArr[w].length + 1)));
                     let d = type.test(Number(data.substring(name + nameArr[w].length, name + nameArr[w].length + 4)));
                     // 截取name名称后面的值1,2，3位，转化为数字类型，使用正则表达式验证，先验证三位是否都是数字如果是值为名称后三位的数字，类推
-
-
                     if (d == 1) {
                         var value = data.substring(name + nameArr[w].length, name + nameArr[w].length + 4) + unit;
                     } else if (a == 1) {
@@ -110,10 +132,10 @@ window.addEventListener('load', style('px'));
 
 // 自动获取元素，适用于lineheight之类的属性
 window.addEventListener('load', function () {
-    for (var i = 0; i < element.length; i++) {
-        if (element[i].className.indexOf('light') != -1) {
+    for (let i = 0; i < element.length; i++) {
+        if ([element[i].className].indexOf('light') != -1) {
             let height = element[i].offsetHeight;
-            element[i].style.lineHeight = height + 'px'
+            element[i].style.lineHeight = height + 'px';
         }
         // 控制行高居中
     }
@@ -121,10 +143,25 @@ window.addEventListener('load', function () {
 
 
 
-
-
-
-
+// 选项卡功能（鼠标触碰）
+function tab() {
+    let btn = document.getElementsByClassName('tabBtn');
+    let box = document.getElementsByClassName('tabBox');
+    // 设置索引值
+    for (let i = 0; i < btn.length; i++) {
+        btn[i].onmouseover = function () {
+            for (let i = 0; i < box.length; i++) {
+                box[i].style.display = 'none';
+            }
+            box[i].style.display = 'block';
+        }
+    }
+    if (btn.length !== box.length) {
+        console.error('选项卡：按钮的数量和显示盒子的数量不一致请检查');
+    }
+}
+// 使用方法：按钮添加class：tabBtn需要切换的内容：tabBox
+tab()
 
 
 
@@ -182,29 +219,64 @@ function zoom(value, maxWidth) {
 
 
 
+var Lrl = new Object; //创建对象Lrl
 
 
 
 
+// 组件 Component
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Lrl.component = function (name, data) {
+    let obj = document.getElementsByTagName(name);
+    // 自定义标签
+    for (let i = 0; i < obj.length; i++) {
+        obj[i].className += 'disb '
+        // 设置为块状 留出空格：为了之后添加class
+        // HTML:
+        if (data.html != undefined || data.html != null) {
+            obj[i].innerHTML = data.html;
+            // 设置自定义标签标签的innerHTML
+        }
+        // class:
+        if (data.class != undefined || data.class != null) {
+            obj[i].className += data.class;
+        }
+        // imgs:
+        let img = obj[i].getElementsByTagName('img'); //设置里面图片的src
+        if (data.imgs != undefined || data.imgs != null) {
+            if (img.length != data.imgs.length) {
+                console.error('img标签数量与imgs数组储存的路径数量不一致，请检查');
+            } else {
+                for (let i = 0; i < img.length; i++) {
+                    img[i].src = data.imgs[i];
+                }
+            }
+        }
+        // addStyle:
+        if (data.addStyle != undefined || data.addStyle != null) {
+            obj[i].setAttribute('style', data.addStyle);
+        }
+        //style；
+        if (data.style != undefined || data.style != null) {
+            obj[i].innerHTML += '<style>' + data.style + '</style>';
+        }
+        // script： 
+    }
+    // script事件不参与循环放在整个body的最下面
+    if (data.script != undefined || data.script != null) {
+        let script = document.createElement('script');
+        script.innerHTML += data.script;
+        document.body.appendChild(script)
+    }
+}
+Lrl.component('liu', {
+    html: '<div>我是组件</div>', //填写HTML
+    class: '', // class注意中间要留空格
+    addStyle: '', //行内style
+    imgs: [], //如果有图片添加图片
+    style: '', //设置style标签到obj内
+    script: 'console.log("1");', //设置script标签到obj内
+})
 
 
 
@@ -241,7 +313,7 @@ function show() {
 // 点击显示
 // 轮播
 function carouselLrl(width, height, time) {
-    // 参数顺序：宽度{盒子，图片}高度{戒子，图片，ul}间隔时间{js定时器间隔时间}
+    // 参数顺序：宽度{盒子，图片}高度{盒子，图片，ul}间隔时间{js定时器间隔时间}
     let box = document.getElementById('carouselBox');
     let ul = box.getElementsByTagName('ul')[0];
     let li = ul.getElementsByTagName('li');
@@ -284,6 +356,89 @@ function carouselLrl(width, height, time) {
 // 需要在css中设置transition,也就是运动时间
 
 
+function $(el) {
+    // 选择器函数 {仅支持id选择器}
+    return document.getElementById(el)
+}
+
+
+
+
+
+animateObj = new Object();
+animateObj.animateIndex = 0
+animateObj.oldData = {}
+
+
+
+function animate(obj, data, time, method) {
+
+    // animate函数的全局变量存储{尽量减少重复使用对象储存}
+
+
+    let oldTime = getComputedStyle(obj).getPropertyValue('transition'); //在所有函数执行前保存旧的时间
+
+    function strat() {
+        obj.style.transition = (time / 1000).toString() + 's';
+        //添加时间 转化为css的秒
+        for (let name in data) {
+            animateObj.oldData[name] = getComputedStyle(obj).getPropertyValue(name)
+            // 存储函数运行之前的属性值,取消函数的时候返回原值
+            obj.style[name] = data[name]; // 循环添加属性 
+        }
+        setTimeout(() => {
+            obj.style.transition = oldTime;
+            // 动画运行完重新设置为旧的时间
+        }, time);
+    }
+
+    function end() {
+        obj.style.transition = (time / 1000).toString() + 's';
+        // 设置时间
+        for (let value in animateObj.oldData) {
+            obj.style[value] = animateObj.oldData[value]; // 循环添加事件
+        }
+        setTimeout(() => {
+            obj.style.transition = oldTime;
+            // 动画运行完重新设置为旧的时间
+        }, time);
+    }
+    if (method != undefined) {
+        if (animateObj.animateIndex == 0) {
+            animateObj.animateIndex = 1
+            strat();
+        } else {
+            animateObj.animateIndex = 0
+            end();
+        }
+    } else {
+        strat();
+    }
+    // 判断使用方法，如果method定义了则执行开始和结束函数，否则只执行结束函数
+
+
+
+    // !!:method方法暂时只能使用一次
+}
+
+$('btn').onclick = function () {
+    animate(
+        $('div'), {
+            height: '200px',
+            width: '200px',
+            backgroundColor: 'blue',
+            fontSize: '34px',
+        }, 1000, 1)
+}
+
+
+// css函数修改元素属性
+function css(obj, data) {
+    for (let name in data) {
+        animateObj.oldData[name] = getComputedStyle(obj).getPropertyValue(name);
+        obj.style[name] = data[name];
+    }
+}
 
 
 
@@ -306,6 +461,34 @@ function carouselLrl(width, height, time) {
 
 
 
+
+
+
+// ajax({
+//     url: "assets/test.json",
+//     method: "GET",
+//     success: function (response) {
+//         console.log(response);
+
+//     },
+
+// })
+
+// function ajax(obj) {
+//     let http;
+//     http = new XMLHttpRequest();
+//     http.onreadystatechange = function () {
+//         if (http.readyState == 4 && http.status >= 200 && http.status < 300) {
+//             // 成功执行的事件
+//             obj.success && obj.success(http.responseText, http.responseXML);
+//         }
+//         obj.method.toLocaleLowerCase() == 'post' ? obj.method = 'POST' : obj.method = 'GET';
+//     }
+//     let time = '?v' + new Date().getTime();
+//     http.open(obj.method, obj.url + time, true);
+//     http.send();
+// }
+// ajax()
 
 
 // m

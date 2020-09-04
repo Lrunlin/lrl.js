@@ -1,6 +1,8 @@
 // 地址： http://101.200.141.4/lrl.js
 // 联系方式：QQ：1974109227
-// 微信号：webzhizuo
+// 微信号：webzhizuo(接bootsrtap,jq,h5,c3,简单的vue)
+// github（随便做着玩）：liurl@gmail.com（Liu Run Lin）
+// js加密地址：https://www.sojson.com/charEncode.html
 var element = document.getElementsByTagName('*');
 // 选择所有标签
 function loadStyle() {
@@ -217,14 +219,14 @@ function zoom(value, maxWidth) {
 
 
 
-var Lrl=new Object;//创建对象Lrl
+var Lrl = new Object; //创建对象Lrl
 
 
 
 
 // 组件 Component
 
-Lrl.component=function(name, data) {
+Lrl.component = function (name, data) {
     let obj = document.getElementsByTagName(name);
     // 自定义标签
     for (let i = 0; i < obj.length; i++) {
@@ -259,11 +261,12 @@ Lrl.component=function(name, data) {
             obj[i].innerHTML += '<style>' + data.style + '</style>';
         }
         // script： 
-        if (data.script != undefined || data.script != null) {
-            let script = document.createElement('script');
-            script.innerHTML += data.script;
-            obj[i].appendChild(script)
-        }
+    }
+    // script事件不参与循环放在整个body的最下面
+    if (data.script != undefined || data.script != null) {
+        let script = document.createElement('script');
+        script.innerHTML += data.script;
+        document.body.appendChild(script)
     }
 }
 Lrl.component('liu', {
@@ -272,18 +275,8 @@ Lrl.component('liu', {
     addStyle: '', //行内style
     imgs: [], //如果有图片添加图片
     style: '', //设置style标签到obj内
-    script: ';', //设置script标签到obj内
+    script: 'console.log("1");', //设置script标签到obj内
 })
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -320,7 +313,7 @@ function show() {
 // 点击显示
 // 轮播
 function carouselLrl(width, height, time) {
-    // 参数顺序：宽度{盒子，图片}高度{戒子，图片，ul}间隔时间{js定时器间隔时间}
+    // 参数顺序：宽度{盒子，图片}高度{盒子，图片，ul}间隔时间{js定时器间隔时间}
     let box = document.getElementById('carouselBox');
     let ul = box.getElementsByTagName('ul')[0];
     let li = ul.getElementsByTagName('li');
@@ -385,6 +378,32 @@ function carouselLrl(width, height, time) {
 
 
 
+
+// ajax({
+//     url: "assets/test.json",
+//     method: "GET",
+//     success: function (response) {
+//         console.log(response);
+
+//     },
+
+// })
+
+// function ajax(obj) {
+//     let http;
+//     http = new XMLHttpRequest();
+//     http.onreadystatechange = function () {
+//         if (http.readyState == 4 && http.status >= 200 && http.status < 300) {
+//             // 成功执行的事件
+//             obj.success && obj.success(http.responseText, http.responseXML);
+//         }
+//         obj.method.toLocaleLowerCase() == 'post' ? obj.method = 'POST' : obj.method = 'GET';
+//     }
+//     let time = '?v' + new Date().getTime();
+//     http.open(obj.method, obj.url + time, true);
+//     http.send();
+// }
+// ajax()
 
 
 // m
